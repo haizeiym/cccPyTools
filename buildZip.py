@@ -12,8 +12,7 @@ def main():
         "--type",
         "-t",
         required=True,
-        choices=["w", "l", "ww"],
-        help="Type of game to deploy: 'w' for wlzb, 'l' for lxby, 'ww' for wlzbtest.",
+        choices=["wlzb", "lxby", "wlzbtest"],
     )
     parser.add_argument(
         "--path",
@@ -25,8 +24,7 @@ def main():
     args = parser.parse_args()
 
     # 映射参数到游戏类型
-    game_type_mapping = {"w": "wlzb", "l": "lxby", "ww": "wlzb/wlzbtest"}
-    game_type = game_type_mapping[args.type]
+    game_type = f"{args.type}"
 
     bzip_path = f"{args.path}"
     fzip_name = next((f for f in os.listdir(bzip_path) if f.startswith("v")), None)
@@ -77,7 +75,7 @@ def main():
             print("Error:", error)
 
         # 上传 index.html 并显示进度
-        index_path = f"../config/{game_type}/index.html"
+        index_path = f"config/{game_type}/index.html"
         commonVar.upload_file_with_progress(
             sftp, index_path, os.path.join(remote_path, "index.html")
         )
