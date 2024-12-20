@@ -6,15 +6,9 @@ import shutil
 import paramiko
 from paramiko import RSAKey
 
-
-from stat import S_ISDIR
-
 CCC_PATH2 = (
     "/Applications/Cocos/Creator/2.4.13/CocosCreator.app/Contents/MacOS/CocosCreator"
 )
-
-PROJECT_PATH = "/Users/lishan/Work/project/slot"
-BUILD_PATH = "/Users/lishan/Work/project/slot/build"
 
 PNGQUANT = "/opt/homebrew/bin/pngquant"
 

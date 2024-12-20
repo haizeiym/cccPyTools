@@ -19,15 +19,23 @@ game_type_mapping = {"s": "wlzb", "f": "lxby", "r": "wlzb/wlzbtest"}
 game_type = game_type_mapping[args.type]
 
 if game_type == "wlzb":
-    VERSION_PATH = "/Users/lishan/Work/project/slot/allConfig/BVersion.json"
-    GAME_HTML_PATH = "/Users/lishan/Work/project/slot/allConfig/index.html"
+    PROJECT_PATH = "/Users/lishan/Work/project/slot"
+    BUILD_PATH = "/Users/lishan/Work/project/slot/build"
+    VERSION_PATH = "../config/wlzb/BVersion.json"
+    GAME_HTML_PATH = "../config/wlzb/index.html"
+
     BASE_URL = "https://wlzb.fish333.com/"
+
     TITLE = "5LIONS"
     START_SCENE = "c1bc28a2-729f-47d8-81bc-cbf91d2e4944"
 elif game_type == "lxby":
-    VERSION_PATH = "/Users/lishan/Work/project/ljfish/allConfig/BVersion.json"
-    GAME_HTML_PATH = "/Users/lishan/Work/project/ljfish/allConfig/index.html"
+    PROJECT_PATH = "/Users/lishan/Work/project/ljfish"
+    BUILD_PATH = "/Users/lishan/Work/project/ljfish/build"
+    VERSION_PATH = "../config/lxby/BVersion.json"
+    GAME_HTML_PATH = "../config/lxby/index.html"
+
     BASE_URL = "https://lxby.fish333.com/"
+
     TITLE = "FISH"
     START_SCENE = "1ef1c33a-a268-466b-b72b-9bf22b36cf2d"
 else:
@@ -82,13 +90,13 @@ else:
     with open(GAME_HTML_PATH, "w") as f:
         f.write(INPUT)
 
-commonVar.clean_build_directory(commonVar.BUILD_PATH)
+commonVar.clean_build_directory(BUILD_PATH)
 
-TO_BUILD_PATH = commonVar.create_version_directory(commonVar.BUILD_PATH, nv)
+TO_BUILD_PATH = commonVar.create_version_directory(BUILD_PATH, nv)
 
 # 执行命令行命令
 cmd = (
-    f"{commonVar.CCC_PATH2} --path {commonVar.PROJECT_PATH} "
+    f"{commonVar.CCC_PATH2} --path {PROJECT_PATH} "
     f'--build "platform=web-mobile;'
     f"title={TITLE};"
     f"debug={IS_DEBUG};"
