@@ -9,13 +9,13 @@ parser.add_argument(
     "--type",
     "-t",
     required=True,
-    choices=["s", "f", "r"],
-    help="Type of game to deploy: 's' for wlzb, 'f' for lxby, 'r' for wlzbtest.",
+    choices=["w", "l", "ww"],
+    help="Type of game to deploy: 'w' for wlzb, 'l' for lxby, 'ww' for wlzbtest.",
 )
 args = parser.parse_args()
 
 # 映射参数到游戏类型
-game_type_mapping = {"s": "wlzb", "f": "lxby", "r": "wlzb/wlzbtest"}
+game_type_mapping = {"w": "wlzb", "l": "lxby", "ww": "wlzb/wlzbtest"}
 game_type = game_type_mapping[args.type]
 
 if game_type == "wlzb":
@@ -46,17 +46,27 @@ IS_DEBUG = "false"
 IS_CONSOLE = "false"
 
 # 检查并处理版本文件
-if not os.path.isfile(VERSION_PATH):
-    with open(VERSION_PATH, "w") as f:
-        json.dump({"version": 1}, f)
-    print("json文件创建完成")
-    nv = 1
-else:
-    with open(VERSION_PATH, "r") as f:
-        version_data = json.load(f)
-    nv = version_data.get("version", 0) + 1
+try:
+    # 确保目录存在
+    os.makedirs(os.path.dirname(VERSION_PATH), exist_ok=True)
+
+    # 读取版本号
+    try:
+        with open(VERSION_PATH, "r") as f:
+            version_data = json.load(f)
+            nv = version_data.get("version", 0) + 1
+    except FileNotFoundError:
+        # 文件不存在时创建新文件
+        nv = 1
+        print("json文件创建完成")
+
+    # 写入新版本号
     with open(VERSION_PATH, "w") as f:
         json.dump({"version": nv}, f)
+
+except Exception as e:
+    print(f"处理版本文件时出错: {e}")
+    exit(1)
 
 # 构建游戏链接
 GAME_URL = f"{BASE_URL}v{nv}/web-mobile/index.html"
@@ -114,6 +124,8 @@ if return_code == 0:
     print("构建成功完成，执行图片压缩")
     commonVar.optimize_pngs(f"{TO_BUILD_PATH}/web-mobile")
     print("图片压缩完成，执行打包")
-    commonVar.run_python_script("./buildZip.py", "-t", f"{args.type}")
+    commonVar.run_python_script(
+        "./buildZip.py", "-t", f"{args.type}", "-p", f"{BUILD_PATH}"
+    )
 else:
     print(f"构建失败，返回码：{return_code}")

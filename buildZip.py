@@ -12,16 +12,23 @@ def main():
         "--type",
         "-t",
         required=True,
-        choices=["s", "f", "r"],
-        help="Type of game to deploy: 's' for wlzb, 'f' for lxby, 'r' for wlzbtest.",
+        choices=["w", "l", "ww"],
+        help="Type of game to deploy: 'w' for wlzb, 'l' for lxby, 'ww' for wlzbtest.",
     )
+    parser.add_argument(
+        "--path",
+        "-p",
+        required=True,
+        help="压缩路径",
+    )
+
     args = parser.parse_args()
 
     # 映射参数到游戏类型
-    game_type_mapping = {"s": "wlzb", "f": "lxby", "r": "wlzb/wlzbtest"}
+    game_type_mapping = {"w": "wlzb", "l": "lxby", "ww": "wlzb/wlzbtest"}
     game_type = game_type_mapping[args.type]
 
-    bzip_path = "../build"
+    bzip_path = f"{args.path}"
     fzip_name = next((f for f in os.listdir(bzip_path) if f.startswith("v")), None)
     if not fzip_name:
         print("No file starting with 'v' found in build directory.")
