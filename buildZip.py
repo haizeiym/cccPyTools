@@ -75,7 +75,9 @@ def main():
             print("Error:", error)
 
         # 上传 index.html 并显示进度
-        index_path = f"config/{game_type}/index.html"
+        index_path = os.path.join(
+            os.path.dirname(__file__), f"config/{game_type}/index.html"
+        )
         commonVar.upload_file_with_progress(
             sftp, index_path, os.path.join(remote_path, "index.html")
         )

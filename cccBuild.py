@@ -21,8 +21,8 @@ game_type = game_type_mapping[args.type]
 if game_type == "wlzb":
     PROJECT_PATH = "/Users/lishan/Work/project/slot"
     BUILD_PATH = "/Users/lishan/Work/project/slot/build"
-    VERSION_PATH = "config/wlzb/BVersion.json"
-    GAME_HTML_PATH = "config/wlzb/index.html"
+    VERSION_PATH = os.path.join(os.path.dirname(__file__), "config/wlzb/BVersion.json")
+    GAME_HTML_PATH = os.path.join(os.path.dirname(__file__), "config/wlzb/index.html")
 
     BASE_URL = "https://wlzb.fish333.com/"
 
@@ -31,8 +31,8 @@ if game_type == "wlzb":
 elif game_type == "lxby":
     PROJECT_PATH = "/Users/lishan/Work/project/ljfish"
     BUILD_PATH = "/Users/lishan/Work/project/ljfish/build"
-    VERSION_PATH = "config/lxby/BVersion.json"
-    GAME_HTML_PATH = "config/lxby/index.html"
+    VERSION_PATH = os.path.join(os.path.dirname(__file__), "config/lxby/BVersion.json")
+    GAME_HTML_PATH = os.path.join(os.path.dirname(__file__), "config/lxby/index.html")
 
     BASE_URL = "https://lxby.fish333.com/"
 
@@ -125,7 +125,11 @@ if return_code == 0:
     commonVar.optimize_pngs(f"{TO_BUILD_PATH}/web-mobile")
     print("图片压缩完成，执行打包")
     commonVar.run_python_script(
-        "./buildZip.py", "-t", f"{game_type}", "-p", f"{BUILD_PATH}"
+        os.path.join(os.path.dirname(__file__), "buildZip.py"),
+        "-t",
+        f"{game_type}",
+        "-p",
+        f"{BUILD_PATH}",
     )
 else:
     print(f"构建失败，返回码：{return_code}")
